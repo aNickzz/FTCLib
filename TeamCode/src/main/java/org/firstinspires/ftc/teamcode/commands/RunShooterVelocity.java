@@ -1,18 +1,18 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 
-public class RunIntake extends CommandBase {
+public class RunShooterVelocity extends CommandBase {
 
-    private Intake intake;
-    private boolean reverseDirection;
+    Shooter shooter;
 
-    public RunIntake(Intake intake, boolean reverseDirection) {
-        this.intake = intake;
-        this.reverseDirection = reverseDirection;
-        addRequirements(this.intake);
+    public RunShooterVelocity(Intake Shooter) {
+        this.shooter = shooter;
+        addRequirements(this.shooter);
     }
 
     // Executed on startup of the command running
@@ -23,17 +23,19 @@ public class RunIntake extends CommandBase {
     // Continuously ran during command execution
     @Override
     public void execute() {
-        if(!reverseDirection) {
-            intake.runIntakeMotor(IntakeConstants.intakePower);
-        } else {
-            intake.runIntakeMotor(-IntakeConstants.intakePower);
+
+        this.shooter.runShooterVelocity(Constants.ShooterConstants.frontShooterRPM);
+
+        if(shooter.isReadyToShoot()) {
+            shooter.feedToShooter();
         }
+
     }
 
     // run once at the end of the command
     @Override
     public void end(boolean interrupted) {
-        intake.stop();
+        shooter.stop();
     }
 
     // a continuous check to see if the command should still be executed
@@ -42,3 +44,4 @@ public class RunIntake extends CommandBase {
         return false;
     }
 }
+

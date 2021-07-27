@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode;
+
 public final class Constants {
 
     public static final class DrivetrainConstants {
@@ -8,8 +10,16 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final String frontMotorName = "";
+        public static final String  frontMotorName = "";
         public static final String backMotorName = "";
+        public static final String feederServoName = "";
+        public static final int feederServoMinAngle = 0;
+        public static final int feederServoMaxAngle = 180;
+        public static final int frontShooterRPM = 60;
+        public static final int backShooterRPM = 60;
+        public static final double frontShooterPower = 0.3;
+        public static final double backShooterPower = 0.3;
+        public static final double shooterMotorTicksPerRev = 28.0;
     }
 
     public static final class IntakeConstants {

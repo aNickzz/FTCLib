@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.geometry.Translation2d;
+import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+import org.firstinspires.ftc.teamcode.Constants.DrivetrainConstants;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Drivetrain extends SubsystemBase {
@@ -13,6 +14,8 @@ public class Drivetrain extends SubsystemBase {
     private Telemetry telemetry;
 
     private SwerveDriveKinematics swerveKinematics;
+
+    private RevIMU gyro;
 
     public Drivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;

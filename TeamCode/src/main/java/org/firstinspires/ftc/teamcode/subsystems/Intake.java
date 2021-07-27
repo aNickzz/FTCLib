@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
@@ -16,7 +17,9 @@ public class Intake extends SubsystemBase {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
-        intakeMotor = new Motor(hardwareMap, Constants.IntakeConstants.intakeMotorName);
+        intakeMotor = new Motor(hardwareMap, IntakeConstants.intakeMotorName);
+
+        initHardware();
     }
 
     public void runIntakeMotor(double power) {
@@ -27,7 +30,7 @@ public class Intake extends SubsystemBase {
         intakeMotor.set(0.0);
     }
 
-    private void initMotors() {
+    private void initHardware() {
         intakeMotor.setInverted(false);
         intakeMotor.setRunMode(Motor.RunMode.RawPower);
         intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
