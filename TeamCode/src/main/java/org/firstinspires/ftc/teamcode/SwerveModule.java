@@ -2,19 +2,23 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
+import org.firstinspires.ftc.teamcode.Constants.DrivetrainConstants;
 
 
 public class SwerveModule {
 
     private MotorEx driveMotor;
     private CRServo azimuthServo;
+    private Motor.Encoder azimuthEncoder;
     private SwerveModuleState moduleState;
 
     public SwerveModule(MotorEx driveMotor, CRServo azimuthServo) {
         this.driveMotor = driveMotor;
         this.azimuthServo = azimuthServo;
+        this.azimuthEncoder = driveMotor.encoder;
     }
 
     public void updateState(SwerveModuleState moduleState) {
@@ -23,7 +27,10 @@ public class SwerveModule {
     }
 
     private Rotation2d getAzimuthAngle() {
-        return Rotation2d.fromDegrees(0);
+        // get the value from the encoder
+        int moduleLocation = azimuthEncoder.getPosition() % DrivetrainConstants.ticksPerModuleRotation;
+        double moduleDegrees = (360.0 / (double)DrivetrainConstants.ticksPerModuleRotation) * (double)moduleLocation;
+        return Rotation2d.fromDegrees(moduleDegrees);
     }
 
     private void runModuleState() {

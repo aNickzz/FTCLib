@@ -7,6 +7,8 @@ public final class Constants {
         public static final String rightDriveMotorName = "";
         public static final String leftAzimuthServoName = "";
         public static final String rightAzimuthServoName = "";
+        public static final double maxSpeed = 1.0;
+        public static final int ticksPerModuleRotation = 0;
     }
 
     public static final class ShooterConstants {
