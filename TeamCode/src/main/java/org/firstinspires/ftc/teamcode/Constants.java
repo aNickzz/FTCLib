@@ -30,7 +30,8 @@ public final class Constants {
     }
 
     public static final class MagazineConstants {
-
+        public static final String liftMotorName = "";
+        public static final double liftPower = 0.2;
     }
 
 }

@@ -22,6 +22,12 @@ public class Intake extends SubsystemBase {
         initHardware();
     }
 
+    private void initHardware() {
+        intakeMotor.setInverted(false);
+        intakeMotor.setRunMode(Motor.RunMode.RawPower);
+        intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+    }
+
     public void runIntakeMotor(double power) {
         intakeMotor.set(power);
     }
@@ -30,10 +36,5 @@ public class Intake extends SubsystemBase {
         intakeMotor.set(0.0);
     }
 
-    private void initHardware() {
-        intakeMotor.setInverted(false);
-        intakeMotor.setRunMode(Motor.RunMode.RawPower);
-        intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-    }
 
 }
