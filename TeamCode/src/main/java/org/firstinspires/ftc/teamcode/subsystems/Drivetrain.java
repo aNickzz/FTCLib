@@ -24,8 +24,8 @@ public class Drivetrain extends SubsystemBase {
     private Telemetry telemetry;
     private SwerveDriveKinematics swerveKinematics;
     private RevIMU gyro;
-    private SwerveModule leftModule;
-    private SwerveModule rightModule;
+    public SwerveModule leftModule;
+    public SwerveModule rightModule;
 
     public Drivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
@@ -45,8 +45,18 @@ public class Drivetrain extends SubsystemBase {
         );
     }
 
+
     public double getAngle() {
         return gyro.getRotation2d().getDegrees();
+    }
+
+    public Rotation2d getLeftDriveAngle() {
+        return leftModule.getAzimuthAngle();
+    }
+
+
+    public Rotation2d getRightDriveAngle() {
+        return rightModule.getAzimuthAngle();
     }
 
     public void drive(double x, double y, double rotation, boolean fieldOriented, boolean squareInputs) {

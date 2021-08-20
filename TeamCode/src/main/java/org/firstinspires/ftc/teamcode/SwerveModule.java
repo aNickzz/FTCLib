@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.controller.PController;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -10,15 +12,16 @@ import org.firstinspires.ftc.teamcode.Constants.DrivetrainConstants;
 
 public class SwerveModule {
 
-    private MotorEx driveMotor;
-    private CRServo azimuthServo;
-    private Motor.Encoder azimuthEncoder;
+    public MotorEx driveMotor;
+    public CRServo azimuthServo;
+    public Motor.Encoder azimuthEncoder;
     private SwerveModuleState moduleState;
 
     public SwerveModule(MotorEx driveMotor, CRServo azimuthServo) {
         this.driveMotor = driveMotor;
         this.azimuthServo = azimuthServo;
         this.azimuthEncoder = driveMotor.encoder;
+        this.azimuthEncoder.setDirection(Motor.Direction.REVERSE);
     }
 
     public void updateState(SwerveModuleState moduleState) {
@@ -26,24 +29,45 @@ public class SwerveModule {
         runModuleState();
     }
 
-    private Rotation2d getAzimuthAngle() {
+    public Rotation2d getAzimuthAngle() {
         // get the value from the encoder
         int moduleLocation = azimuthEncoder.getPosition() % DrivetrainConstants.ticksPerModuleRotation;
+
         double moduleDegrees = (360.0 / (double)DrivetrainConstants.ticksPerModuleRotation) * (double)moduleLocation;
+
+
         return Rotation2d.fromDegrees(moduleDegrees);
+    }
+
+    public double getStateAngle() {
+        return moduleState.angle.getDegrees();
+    }
+
+    public double calculatePController() {
+        PController ctrl = new PController(0.01);
+
+        double currentDegrees = getAzimuthAngle().getDegrees();
+        double targetDegrees = moduleState.angle.getDegrees();
+
+        if (currentDegrees - targetDegrees > 180) {
+            targetDegrees += 360;
+        }
+
+        if (currentDegrees - targetDegrees < -180) {
+            targetDegrees -= 360;
+        }
+
+
+        double ctrlResult = ctrl.calculate(currentDegrees, targetDegrees);
+
+        return ctrlResult;
     }
 
     private void runModuleState() {
         // set the drive motor to drive
         driveMotor.set(moduleState.speedMetersPerSecond);
 
-        if(moduleState.angle.getDegrees()+1.5 < getAzimuthAngle().getDegrees()) {
-            // rotate the module ccw
-            azimuthServo.set(-0.8);
-        } else if(moduleState.angle.getDegrees()-1.5 > getAzimuthAngle().getDegrees()) {
-            // rotate the module cw
-            azimuthServo.set(0.8);
-        }
+        azimuthServo.set(calculatePController());
     }
 
     private void runModuleStateOptimised() {
